@@ -1,0 +1,5 @@
+# Eine Domain pro Zeile (ohne Protokoll)
+# Fuehre Subdomains mit fuehrendem Punkt auf, z.B. .example.com
+
+# Nur DuckDuckGo erlauben
+.duckduckgo.com

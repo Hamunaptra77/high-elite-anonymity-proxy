@@ -1,0 +1,26 @@
+# Tor-Konfiguration für anonyme Proxy-Egress (Client-only Mode)
+# SOCKS5-Port nur für Localhost verfügbar
+
+# SOCKS5-Konfiguration (IPv4 only - IPv6 disabled)
+SocksPort 127.0.0.1:9050
+SocksPolicy accept 127.0.0.1
+SocksPolicy reject [::]/0
+SocksPolicy reject *
+
+# Basis-Konfiguration
+RunAsDaemon 0
+DataDirectory /var/lib/tor
+Log notice stdout
+
+# Sicherheit: Nur Client-Mode (kein Relay, kein Exit-Node)
+ClientOnly 1
+
+# Strenge Exit-Policy: keine ausgehenden Verbindungen als Exit-Node
+ExitPolicy reject *:*
+
+# SOCKS5-Sicherheit
+SafeSocks 1
+
+# DNS-Sicherheit (verhindert DNS-Leaks)
+AutomapHostsOnResolve 1
+AutomapHostsSuffixes .onion,.exit

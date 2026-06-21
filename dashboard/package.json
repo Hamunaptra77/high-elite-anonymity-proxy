@@ -1,0 +1,13 @@
+{
+  "name": "proxy-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dashboard for Squid/Privoxy/Tor logs and connection view",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

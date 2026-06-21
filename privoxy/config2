@@ -1,0 +1,22 @@
+# IPv4-only listener (IPv6 disabled)
+listen-address  127.0.0.2:8128
+
+toggle  1
+enable-remote-toggle  0
+enable-remote-http-toggle  0
+enable-edit-actions 0
+enforce-blocks 0
+
+# Erhoehte Timeouts fuer langsame Tor-Circuits
+socket-timeout 300
+
+# Zweiter Tor-Weg: Privoxy2 -> Tor2 (SOCKS 9060)
+# socks5t = transparent DNS (verhindert DNS-Leaks)
+forward-socks5t /        127.0.0.1:9060 .
+
+# Lokale Netzwerk-Bypasses (verhindert Tor fuer interne IPs)
+forward 192.168.*.*/     .
+forward 127.*.*.*/       .
+forward localhost/       .
+
+logdir /var/log/privoxy

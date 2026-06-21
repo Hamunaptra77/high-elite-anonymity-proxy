@@ -1,0 +1,51 @@
+services:
+  squid-privoxy:
+    build: .
+    container_name: squid-privoxy
+    env_file:
+      - .env
+    environment:
+      - SQUID_USERNAME=${SQUID_USERNAME:?Bitte SQUID_USERNAME in .env setzen}
+      - SQUID_PASSWORD=${SQUID_PASSWORD:?Bitte SQUID_PASSWORD in .env setzen}
+    volumes:
+      - ./squid/squid.conf:/etc/squid/squid.conf
+      - ./squid/allowed_domains.txt:/etc/squid/allowed_domains.txt
+      - ./.env:/etc/squid/runtime.env
+      - ./privoxy/config:/etc/privoxy/config
+      - ./privoxy/config2:/etc/privoxy/config2
+      - ./tor/torrc:/etc/tor/torrc
+      - ./tor/torrc2:/etc/tor/torrc2
+      - squid_logs:/var/log/squid
+    ports:
+      - "127.0.0.1:3128:3128"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+    healthcheck:
+      test: ["CMD-SHELL", "squid -k parse -f /etc/squid/squid.conf >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  dashboard:
+    build: ./dashboard
+    container_name: proxy-dashboard
+    depends_on:
+      - squid-privoxy
+    volumes:
+      - squid_logs:/logs:ro
+      - ./squid/allowed_domains.txt:/config/allowed_domains.txt
+      - ./.env:/config/.env
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "127.0.0.1:8088:8088"
+    restart: unless-stopped
+
+volumes:
+  squid_logs:

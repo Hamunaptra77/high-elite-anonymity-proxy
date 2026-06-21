@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxy Dashboard</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Proxy Dashboard</h1>
+      <p>Squid / Privoxy / Tor Verbindung und Logs</p>
+      <div id="lastUpdate">Lade Daten...</div>
+    </header>
+
+    <main>
+      <section class="cards">
+        <article class="card">
+          <h2>Erfolgreiche Tunnels</h2>
+          <div id="tunnel200" class="big">0</div>
+        </article>
+        <article class="card">
+          <h2>Denied 403</h2>
+          <div id="denied403" class="big">0</div>
+        </article>
+        <article class="card">
+          <h2>Denied 407</h2>
+          <div id="denied407" class="big">0</div>
+        </article>
+        <article class="card">
+          <h2>Andere Fehler</h2>
+          <div id="otherErrors" class="big">0</div>
+        </article>
+        <article class="card">
+          <h2>Direkte IP</h2>
+          <div id="directIp" class="big ip">-</div>
+        </article>
+        <article class="card">
+          <h2>Proxy Exit IP</h2>
+          <div id="proxyExitIp" class="big ip">-</div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <h2>Verteilte Verbindung (ROUNDROBIN_PARENT)</h2>
+        <div id="peerUsage" class="peers"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Letzte Verbindungen (Access Log)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Zeit</th>
+                <th>Result</th>
+                <th>Methode</th>
+                <th>Ziel</th>
+                <th>User</th>
+                <th>Parent</th>
+                <th>Dauer (ms)</th>
+              </tr>
+            </thead>
+            <tbody id="accessRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Cache Log (Tail)</h2>
+        <pre id="cacheTail">Keine Daten</pre>
+      </section>
+
+      <section class="panel">
+        <h2>allowed_domains.txt Editor</h2>
+        <p class="hint">Eine Domain pro Zeile. Fuer Subdomains mit fuehrendem Punkt, z. B. .example.com</p>
+        <textarea id="allowedDomainsEditor" class="editor" spellcheck="false"></textarea>
+        <div class="editor-actions">
+          <button id="reloadDomainsBtn" type="button">Neu laden</button>
+          <button id="saveDomainsBtn" type="button">Speichern</button>
+          <button id="saveRestartDomainsBtn" type="button">Speichern + Squid Neustart</button>
+          <span id="editorStatus">Nicht geladen</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>.env Editor (SQUID Credentials)</h2>
+        <p class="hint">Aendere Benutzername und Passwort direkt im Dashboard.</p>
+        <div class="form-grid">
+          <label for="envUsername">SQUID_USERNAME</label>
+          <input id="envUsername" class="text-input" type="text" autocomplete="off" />
+          <label for="envPassword">SQUID_PASSWORD</label>
+          <input id="envPassword" class="text-input" type="text" autocomplete="off" />
+        </div>
+        <div class="editor-actions">
+          <button id="reloadEnvBtn" type="button">.env laden</button>
+          <button id="saveEnvBtn" type="button">.env speichern</button>
+          <button id="saveRestartEnvBtn" type="button">.env speichern + Squid Neustart</button>
+          <span id="envStatus">Nicht geladen</span>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
